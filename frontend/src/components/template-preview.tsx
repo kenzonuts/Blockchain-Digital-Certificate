@@ -40,7 +40,7 @@ export function TemplatePreview({
 
   return (
     <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-      <div className="border-b border-slateate-200 border-slate-200 px-4 py-3">
+      <div className="border-b border-slate-200 px-4 py-3">
         <p className="text-sm font-medium text-slate-900">
           Preview{templateName ? ` — ${templateName}` : ""}
         </p>
