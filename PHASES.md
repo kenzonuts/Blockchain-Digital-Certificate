@@ -8,8 +8,8 @@ Dokumen ini memecah pembangunan project menjadi phase yang berurutan. Kerjakan s
 
 | Phase | Nama | Fokus utama | Status |
 |-------|------|-------------|--------|
-| 0 | Project Setup | Scaffold, tooling, env | Pending |
-| 1 | Database & Auth | Schema Prisma, login, session | Pending |
+| 0 | Project Setup | Scaffold, tooling, env | Done (Hardhat deferred to Phase 4) |
+| 1 | Database & Auth | Schema Prisma, login, session | Done |
 | 2 | Template Management | Upload, preview, CRUD template | Pending |
 | 3 | Certificate & PDF | Create cert, generate PDF, SHA-256 | Pending |
 | 4 | Smart Contract & Publish | Solidity, Hardhat, publish hash | Pending |
@@ -24,13 +24,13 @@ Dokumen ini memecah pembangunan project menjadi phase yang berurutan. Kerjakan s
 
 ### Deliverables
 
-- [ ] Struktur folder (`frontend/`, `backend/`, `contracts/`)
-- [ ] Next.js + TypeScript + Tailwind + shadcn/ui
-- [ ] Express.js + TypeScript
+- [x] Struktur folder (`frontend/`, `backend/`, `contracts/`)
+- [x] Next.js + TypeScript + Tailwind (+ utility UI; shadcn penuh opsional)
+- [x] Express.js + TypeScript
 - [ ] Hardhat project (Solidity)
-- [ ] PostgreSQL + Prisma init
-- [ ] File `.env.example` (tanpa secret nyata)
-- [ ] README singkat cara menjalankan lokal
+- [x] PostgreSQL via Supabase + Prisma init
+- [x] File `.env.example` (tanpa secret nyata)
+- [x] README singkat cara menjalankan lokal
 
 ### Stack awal
 
@@ -69,20 +69,20 @@ Semua service bisa dijalankan lokal (frontend, backend, DB) tanpa error boot.
 
 ### Deliverables
 
-- [ ] Prisma schema sesuai spek
-- [ ] Migrasi database
-- [ ] Seed admin user
-- [ ] Endpoint login / logout
-- [ ] Auth middleware (JWT atau session)
-- [ ] Halaman Login (frontend)
-- [ ] Layout Admin (sidebar/nav) + route protection
-- [ ] Logout
+- [x] Prisma schema sesuai spek
+- [x] Migrasi database (menunggu password Supabase)
+- [x] Seed admin user (menunggu password Supabase)
+- [x] Endpoint login / logout
+- [x] Auth middleware (JWT atau session)
+- [x] Halaman Login (frontend)
+- [x] Layout Admin (sidebar/nav) + route protection
+- [x] Logout
 
 ### Pages
 
-- Public: Landing Page (skeleton)
-- Auth: Login
-- Admin: Dashboard shell (masih kosong/statistik dummy boleh)
+- [x] Public: Landing Page (skeleton)
+- [x] Auth: Login
+- [x] Admin: Dashboard shell (masih kosong/statistik dummy boleh)
 
 ### Done when
 
