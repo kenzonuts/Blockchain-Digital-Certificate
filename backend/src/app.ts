@@ -5,6 +5,7 @@ import multer from "multer";
 import { env } from "./config/env";
 import { UPLOAD_ROOT, ensureUploadDirs } from "./lib/uploads";
 import { authRouter } from "./routes/auth";
+import { certificatesRouter } from "./routes/certificates";
 import { dashboardRouter } from "./routes/dashboard";
 import { templatesRouter } from "./routes/templates";
 
@@ -30,6 +31,7 @@ export function createApp() {
   app.use("/api/auth", authRouter);
   app.use("/api/dashboard", dashboardRouter);
   app.use("/api/templates", templatesRouter);
+  app.use("/api/certificates", certificatesRouter);
 
   app.use(
     (

@@ -3,6 +3,7 @@ import path from "path";
 
 export const UPLOAD_ROOT = path.resolve(process.cwd(), "uploads");
 export const TEMPLATE_UPLOAD_DIR = path.join(UPLOAD_ROOT, "templates");
+export const CERTIFICATE_UPLOAD_DIR = path.join(UPLOAD_ROOT, "certificates");
 
 const ALLOWED_MIME = new Set([
   "image/png",
@@ -15,6 +16,7 @@ export const MAX_IMAGE_BYTES = 5 * 1024 * 1024; // 5MB
 
 export function ensureUploadDirs() {
   fs.mkdirSync(TEMPLATE_UPLOAD_DIR, { recursive: true });
+  fs.mkdirSync(CERTIFICATE_UPLOAD_DIR, { recursive: true });
 }
 
 export function isAllowedImage(mime: string): boolean {
