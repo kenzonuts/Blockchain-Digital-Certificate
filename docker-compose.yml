@@ -1,0 +1,21 @@
+# Local Postgres (optional). Primary database is Supabase — see backend/.env
+# Use this only if you want a local fallback:
+#   docker compose up -d postgres
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: cert-postgres
+    profiles: ["local-db"]
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: cert
+      POSTGRES_PASSWORD: cert
+      POSTGRES_DB: blockchain_cert
+    volumes:
+      - cert_pgdata:/var/lib/postgresql/data
+
+volumes:
+  cert_pgdata:

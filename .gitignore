@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+
+# Env / secrets
+.env
+.env.local
+.env.*.local
+
+# Local Postgres data (fallback only; primary DB is Supabase)
+.data/
+
+# Build
+dist/
+.next/
+out/
+coverage/
+
+# Uploads / runtime
+uploads/
+*.log
+.DS_Store

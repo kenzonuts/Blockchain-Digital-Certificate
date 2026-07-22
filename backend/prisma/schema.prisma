@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  // Direct connection (non-pooler) required for Prisma migrate on Supabase
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  ADMIN
+}
+
+enum TemplateStatus {
+  ACTIVE
+  INACTIVE
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role     @default(ADMIN)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("users")
+}
+
+model CertificateTemplate {
+  id              String         @id @default(cuid())
+  templateName    String         @map("template_name")
+  backgroundImage String?        @map("background_image")
+  logo            String?
+  signature       String?
+  stamp           String?
+  status          TemplateStatus @default(INACTIVE)
+  createdAt       DateTime       @default(now()) @map("created_at")
+  certificates    Certificate[]
+
+  @@map("certificate_templates")
+}
+
+model Certificate {
+  id                   String    @id @default(cuid())
+  certificateId        String    @unique @map("certificate_id")
+  recipientName        String    @map("recipient_name")
+  title                String
+  issueDate            DateTime  @map("issue_date")
+  issuer               String
+  templateId           String    @map("template_id")
+  pdfPath              String?   @map("pdf_path")
+  certificateHash      String?   @map("certificate_hash")
+  transactionHash      String?   @map("transaction_hash")
+  blockNumber          Int?      @map("block_number")
+  blockchainTimestamp  DateTime? @map("blockchain_timestamp")
+  createdAt            DateTime  @default(now()) @map("created_at")
+  template             CertificateTemplate @relation(fields: [templateId], references: [id])
+
+  @@map("certificates")
+}
