@@ -180,6 +180,12 @@ export const api = {
       { method: "POST" }
     );
   },
+  publishCertificate(id: string) {
+    return request<{
+      certificate: Certificate;
+      issuerWallet: string;
+    }>(`/api/certificates/${id}/publish`, { method: "POST" });
+  },
   async downloadCertificate(id: string, filename: string) {
     const token = getToken();
     const res = await fetch(`${API_URL}/api/certificates/${id}/download`, {

@@ -10,7 +10,10 @@ export default function CertificateDetailPage() {
   const [certificate, setCertificate] = useState<Certificate | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const [busy, setBusy] = useState<"regen" | "download" | null>(null);
+  const [busy, setBusy] = useState<
+    "regen" | "download" | "publish" | null
+  >(null);
+  const [issuerWallet, setIssuerWallet] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     if (!params.id) return;
@@ -59,6 +62,29 @@ export default function CertificateDetailPage() {
     }
   }
 
+  async function publish() {
+    if (!certificate) return;
+    if (
+      !confirm(
+        "Publish this certificate hash to the blockchain? This cannot be undone."
+      )
+    ) {
+      return;
+    }
+
+    setBusy("publish");
+    setError(null);
+    try {
+      const res = await api.publishCertificate(certificate.id);
+      setCertificate(res.certificate);
+      setIssuerWallet(res.issuerWallet);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Publish failed");
+    } finally {
+      setBusy(null);
+    }
+  }
+
   if (loading) {
     return <p className="text-sm text-slate-500">Loading certificate...</p>;
   }
@@ -79,6 +105,8 @@ export default function CertificateDetailPage() {
     );
   }
 
+  const published = Boolean(certificate.transactionHash);
+
   const rows: Array<[string, string]> = [
     ["Certificate ID", certificate.certificateId],
     ["Recipient", certificate.recipientName],
@@ -97,12 +125,25 @@ export default function CertificateDetailPage() {
     ["Verify URL", certificate.verifyUrl],
     ["PDF path", certificate.pdfPath ?? "—"],
     [
-      "Blockchain",
-      certificate.transactionHash
-        ? `Published (${certificate.transactionHash.slice(0, 12)}…)`
-        : "Not published yet (Phase 4)",
+      "Status",
+      published ? "Published on blockchain" : "Ready to publish",
+    ],
+    ["Transaction hash", certificate.transactionHash ?? "—"],
+    [
+      "Block number",
+      certificate.blockNumber != null ? String(certificate.blockNumber) : "—",
+    ],
+    [
+      "Blockchain timestamp",
+      certificate.blockchainTimestamp
+        ? new Date(certificate.blockchainTimestamp).toLocaleString()
+        : "—",
     ],
   ];
+
+  if (issuerWallet) {
+    rows.push(["Issuer wallet", issuerWallet]);
+  }
 
   return (
     <div className="space-y-6">
@@ -132,8 +173,20 @@ export default function CertificateDetailPage() {
           </button>
           <button
             type="button"
+            onClick={() => void publish()}
+            disabled={busy !== null || published || !certificate.certificateHash}
+            className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-sm font-medium text-emerald-700 hover:bg-emerald-100 disabled:opacity-60"
+          >
+            {busy === "publish"
+              ? "Publishing..."
+              : published
+                ? "Published"
+                : "Publish to Blockchain"}
+          </button>
+          <button
+            type="button"
             onClick={() => void regenerate()}
-            disabled={busy !== null || Boolean(certificate.transactionHash)}
+            disabled={busy !== null || published}
             className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-60"
           >
             {busy === "regen" ? "Regenerating..." : "Regenerate PDF"}
@@ -144,6 +197,13 @@ export default function CertificateDetailPage() {
       {error ? (
         <p className="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-600">
           {error}
+        </p>
+      ) : null}
+
+      {published ? (
+        <p className="rounded-xl bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
+          Hash is on-chain. PDF regeneration is locked to keep verification
+          consistent.
         </p>
       ) : null}
 

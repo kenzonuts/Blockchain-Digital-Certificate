@@ -8,11 +8,11 @@ Dokumen ini memecah pembangunan project menjadi phase yang berurutan. Kerjakan s
 
 | Phase | Nama | Fokus utama | Status |
 |-------|------|-------------|--------|
-| 0 | Project Setup | Scaffold, tooling, env | Done (Hardhat deferred to Phase 4) |
+| 0 | Project Setup | Scaffold, tooling, env | Done |
 | 1 | Database & Auth | Schema Prisma, login, session | Done |
 | 2 | Template Management | Upload, preview, CRUD template | Done |
 | 3 | Certificate & PDF | Create cert, generate PDF, SHA-256 | Done |
-| 4 | Smart Contract & Publish | Solidity, Hardhat, publish hash | Pending |
+| 4 | Smart Contract & Publish | Solidity, Hardhat, publish hash | Done |
 | 5 | Public Verification | Verify page, QR, compare hash | Pending |
 | 6 | Dashboard & Polish | Stats, UI, deploy demo | Pending |
 
@@ -27,7 +27,7 @@ Dokumen ini memecah pembangunan project menjadi phase yang berurutan. Kerjakan s
 - [x] Struktur folder (`frontend/`, `backend/`, `contracts/`)
 - [x] Next.js + TypeScript + Tailwind (+ utility UI; shadcn penuh opsional)
 - [x] Express.js + TypeScript
-- [ ] Hardhat project (Solidity)
+- [x] Hardhat project (Solidity)
 - [x] PostgreSQL via Supabase + Prisma init
 - [x] File `.env.example` (tanpa secret nyata)
 - [x] README singkat cara menjalankan lokal
@@ -205,13 +205,13 @@ Fungsi:
 
 ### Deliverables
 
-- [ ] Contract Solidity + tests Hardhat
-- [ ] Deploy script (local + Sepolia)
-- [ ] Backend service Ethers.js (issuer wallet di server)
-- [ ] Endpoint Publish to Blockchain
-- [ ] UI tombol Publish di Certificate Detail
-- [ ] Guard: tidak boleh publish ulang ID yang sama
-- [ ] Tampilkan tx hash / block number di detail
+- [x] Contract Solidity + tests Hardhat
+- [x] Deploy script (local + Sepolia)
+- [x] Backend service Ethers.js (issuer wallet di server)
+- [x] Endpoint Publish to Blockchain
+- [x] UI tombol Publish di Certificate Detail
+- [x] Guard: tidak boleh publish ulang ID yang sama
+- [x] Tampilkan tx hash / block number di detail
 
 ### Done when
 
