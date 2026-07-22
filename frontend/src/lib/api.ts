@@ -7,6 +7,17 @@ export type AuthUser = {
   role: string;
 };
 
+export type CertificateTemplate = {
+  id: string;
+  templateName: string;
+  backgroundImage: string | null;
+  logo: string | null;
+  signature: string | null;
+  stamp: string | null;
+  status: "ACTIVE" | "INACTIVE";
+  createdAt: string;
+};
+
 type LoginResponse = {
   token: string;
   user: AuthUser;
@@ -29,12 +40,22 @@ export function isAuthenticated(): boolean {
   return Boolean(getToken());
 }
 
+export function assetUrl(path?: string | null): string | null {
+  if (!path) return null;
+  if (path.startsWith("http://") || path.startsWith("https://")) return path;
+  return `${API_URL}${path.startsWith("/") ? path : `/${path}`}`;
+}
+
 async function request<T>(
   path: string,
-  options: RequestInit = {}
+  options: RequestInit = {},
+  isFormData = false
 ): Promise<T> {
   const headers = new Headers(options.headers);
-  headers.set("Content-Type", "application/json");
+
+  if (!isFormData) {
+    headers.set("Content-Type", "application/json");
+  }
 
   const token = getToken();
   if (token) {
@@ -80,5 +101,36 @@ export const api = {
       blockchainTransactions: number;
       certificatesVerified: number;
     }>("/api/dashboard/stats");
+  },
+  listTemplates() {
+    return request<{ templates: CertificateTemplate[] }>("/api/templates");
+  },
+  getTemplate(id: string) {
+    return request<{ template: CertificateTemplate }>(`/api/templates/${id}`);
+  },
+  createTemplate(formData: FormData) {
+    return request<{ template: CertificateTemplate }>(
+      "/api/templates",
+      { method: "POST", body: formData },
+      true
+    );
+  },
+  updateTemplate(id: string, formData: FormData) {
+    return request<{ template: CertificateTemplate }>(
+      `/api/templates/${id}`,
+      { method: "PUT", body: formData },
+      true
+    );
+  },
+  activateTemplate(id: string) {
+    return request<{ template: CertificateTemplate }>(
+      `/api/templates/${id}/activate`,
+      { method: "POST" }
+    );
+  },
+  deleteTemplate(id: string) {
+    return request<{ message: string }>(`/api/templates/${id}`, {
+      method: "DELETE",
+    });
   },
 };
