@@ -18,4 +18,7 @@ export const env = {
   jwtExpiresIn: process.env.JWT_EXPIRES_IN ?? "7d",
   corsOrigin: process.env.CORS_ORIGIN ?? "http://localhost:3000",
   appUrl: process.env.APP_URL ?? process.env.CORS_ORIGIN ?? "http://localhost:3000",
+  blockchainRpcUrl: process.env.BLOCKCHAIN_RPC_URL ?? "",
+  blockchainPrivateKey: process.env.BLOCKCHAIN_PRIVATE_KEY ?? "",
+  certificateRegistryAddress: process.env.CERTIFICATE_REGISTRY_ADDRESS ?? "",
 };

@@ -3,12 +3,11 @@ import fs from "fs";
 import { z } from "zod";
 import { prisma } from "../lib/prisma";
 import { requireAuth } from "../middleware/auth";
-import {
-  absoluteFromPublicPath,
-  safeUnlink,
-} from "../lib/uploads";
 import { generateCertificatePdf } from "../services/pdf";
 import { buildVerifyUrl } from "../services/qr";
+import { issueCertificateOnChain } from "../services/blockchain";
+import { sha256File } from "../services/hash";
+import { absoluteFromPublicPath, safeUnlink } from "../lib/uploads";
 
 export const certificatesRouter = Router();
 
@@ -254,4 +253,81 @@ certificatesRouter.get("/:id/download", async (req, res) => {
       }
     }
   );
+});
+
+certificatesRouter.post("/:id/publish", async (req, res) => {
+  const certificate = await prisma.certificate.findFirst({
+    where: {
+      OR: [{ id: req.params.id }, { certificateId: req.params.id }],
+    },
+    include: {
+      template: {
+        select: { id: true, templateName: true, status: true },
+      },
+    },
+  });
+
+  if (!certificate) {
+    res.status(404).json({ message: "Certificate not found" });
+    return;
+  }
+
+  if (certificate.transactionHash) {
+    res.status(400).json({ message: "Certificate already published" });
+    return;
+  }
+
+  if (!certificate.pdfPath || !certificate.certificateHash) {
+    res.status(400).json({
+      message: "Certificate PDF/hash missing. Generate PDF first.",
+    });
+    return;
+  }
+
+  const abs = absoluteFromPublicPath(certificate.pdfPath);
+  if (!fs.existsSync(abs)) {
+    res.status(400).json({ message: "Certificate PDF file missing on disk" });
+    return;
+  }
+
+  // Re-hash stored PDF so on-chain value always matches file bytes
+  const freshHash = sha256File(abs);
+  if (freshHash !== certificate.certificateHash) {
+    await prisma.certificate.update({
+      where: { id: certificate.id },
+      data: { certificateHash: freshHash },
+    });
+  }
+
+  try {
+    const onChain = await issueCertificateOnChain({
+      certificateId: certificate.certificateId,
+      certificateHash: freshHash,
+    });
+
+    const updated = await prisma.certificate.update({
+      where: { id: certificate.id },
+      data: {
+        certificateHash: freshHash,
+        transactionHash: onChain.transactionHash,
+        blockNumber: onChain.blockNumber,
+        blockchainTimestamp: onChain.blockchainTimestamp,
+      },
+      include: {
+        template: {
+          select: { id: true, templateName: true, status: true },
+        },
+      },
+    });
+
+    res.json({
+      certificate: serializeCertificate(updated),
+      issuerWallet: onChain.issuerWallet,
+    });
+  } catch (error) {
+    console.error(error);
+    const message =
+      error instanceof Error ? error.message : "Failed to publish on blockchain";
+    res.status(500).json({ message });
+  }
 });
