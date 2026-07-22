@@ -17,5 +17,6 @@ coverage/
 
 # Uploads / runtime
 uploads/
+backend/uploads/
 *.log
 .DS_Store

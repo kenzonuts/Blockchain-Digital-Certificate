@@ -10,7 +10,7 @@ Dokumen ini memecah pembangunan project menjadi phase yang berurutan. Kerjakan s
 |-------|------|-------------|--------|
 | 0 | Project Setup | Scaffold, tooling, env | Done (Hardhat deferred to Phase 4) |
 | 1 | Database & Auth | Schema Prisma, login, session | Done |
-| 2 | Template Management | Upload, preview, CRUD template | Pending |
+| 2 | Template Management | Upload, preview, CRUD template | Done |
 | 3 | Certificate & PDF | Create cert, generate PDF, SHA-256 | Pending |
 | 4 | Smart Contract & Publish | Solidity, Hardhat, publish hash | Pending |
 | 5 | Public Verification | Verify page, QR, compare hash | Pending |
@@ -96,23 +96,23 @@ Admin bisa login → masuk dashboard → logout. User tanpa token tidak bisa aks
 
 ### Fitur
 
-- [ ] Upload Background Template
-- [ ] Upload Logo
-- [ ] Upload Signature (optional)
-- [ ] Upload Company Stamp (optional)
-- [ ] Preview Template
-- [ ] Edit Template
-- [ ] Delete Template
-- [ ] Set Active Template
+- [x] Upload Background Template
+- [x] Upload Logo
+- [x] Upload Signature (optional)
+- [x] Upload Company Stamp (optional)
+- [x] Preview Template
+- [x] Edit Template
+- [x] Delete Template
+- [x] Set Active Template
 
 ### Deliverables
 
-- [ ] Storage lokal (atau folder `uploads/`) untuk asset template
-- [ ] API CRUD templates
-- [ ] Validasi file (tipe/ukuran image)
-- [ ] Halaman Template Management
-- [ ] Form create/edit + preview
-- [ ] Status active/inactive (hanya satu active, atau flag `is_active`)
+- [x] Storage lokal (atau folder `uploads/`) untuk asset template
+- [x] API CRUD templates
+- [x] Validasi file (tipe/ukuran image)
+- [x] Halaman Template Management
+- [x] Form create/edit + preview
+- [x] Status active/inactive (hanya satu active, atau flag `is_active`)
 
 ### Done when
 
