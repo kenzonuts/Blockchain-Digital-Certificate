@@ -18,6 +18,28 @@ export type CertificateTemplate = {
   createdAt: string;
 };
 
+export type Certificate = {
+  id: string;
+  certificateId: string;
+  recipientName: string;
+  title: string;
+  issueDate: string;
+  issuer: string;
+  templateId: string;
+  pdfPath: string | null;
+  certificateHash: string | null;
+  transactionHash: string | null;
+  blockNumber: number | null;
+  blockchainTimestamp: string | null;
+  createdAt: string;
+  verifyUrl: string;
+  template?: {
+    id: string;
+    templateName: string;
+    status: string;
+  };
+};
+
 type LoginResponse = {
   token: string;
   user: AuthUser;
@@ -132,5 +154,54 @@ export const api = {
     return request<{ message: string }>(`/api/templates/${id}`, {
       method: "DELETE",
     });
+  },
+  listCertificates() {
+    return request<{ certificates: Certificate[] }>("/api/certificates");
+  },
+  getCertificate(id: string) {
+    return request<{ certificate: Certificate }>(`/api/certificates/${id}`);
+  },
+  createCertificate(payload: {
+    certificateId: string;
+    recipientName: string;
+    title: string;
+    issueDate: string;
+    issuer: string;
+    templateId: string;
+  }) {
+    return request<{ certificate: Certificate }>("/api/certificates", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+  },
+  regenerateCertificate(id: string) {
+    return request<{ certificate: Certificate }>(
+      `/api/certificates/${id}/regenerate`,
+      { method: "POST" }
+    );
+  },
+  async downloadCertificate(id: string, filename: string) {
+    const token = getToken();
+    const res = await fetch(`${API_URL}/api/certificates/${id}/download`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+      credentials: "include",
+    });
+
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      throw new Error(
+        (data as { message?: string }).message ?? "Download failed"
+      );
+    }
+
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename.endsWith(".pdf") ? filename : `${filename}.pdf`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
   },
 };
