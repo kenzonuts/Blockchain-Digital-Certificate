@@ -11,7 +11,7 @@ Dokumen ini memecah pembangunan project menjadi phase yang berurutan. Kerjakan s
 | 0 | Project Setup | Scaffold, tooling, env | Done (Hardhat deferred to Phase 4) |
 | 1 | Database & Auth | Schema Prisma, login, session | Done |
 | 2 | Template Management | Upload, preview, CRUD template | Done |
-| 3 | Certificate & PDF | Create cert, generate PDF, SHA-256 | Pending |
+| 3 | Certificate & PDF | Create cert, generate PDF, SHA-256 | Done |
 | 4 | Smart Contract & Publish | Solidity, Hardhat, publish hash | Pending |
 | 5 | Public Verification | Verify page, QR, compare hash | Pending |
 | 6 | Dashboard & Polish | Stats, UI, deploy demo | Pending |
@@ -135,14 +135,14 @@ Admin bisa upload template lengkap, preview, set active, edit, dan hapus.
 
 ### Fitur
 
-- [ ] Create Certificate
-- [ ] Generate PDF (pdf-lib + template assets)
-- [ ] Regenerate PDF
-- [ ] Download PDF
-- [ ] View Detail
-- [ ] Generate QR Code (URL only, contoh: `https://yourdomain.com/verify/CERT-2026-00001`)
-- [ ] Hitung SHA-256 dari file PDF final
-- [ ] Simpan `pdf_path` + `certificate_hash` ke DB
+- [x] Create Certificate
+- [x] Generate PDF (pdf-lib + template assets)
+- [x] Regenerate PDF
+- [x] Download PDF
+- [x] View Detail
+- [x] Generate QR Code (URL only, contoh: `https://yourdomain.com/verify/CERT-2026-00001`)
+- [x] Hitung SHA-256 dari file PDF final
+- [x] Simpan `pdf_path` + `certificate_hash` ke DB
 
 ### Catatan penting
 
@@ -152,11 +152,11 @@ Admin bisa upload template lengkap, preview, set active, edit, dan hapus.
 
 ### Deliverables
 
-- [ ] API create / list / detail / download / regenerate
-- [ ] Service PDF generation
-- [ ] Service hashing (SHA-256)
-- [ ] Service QR (embed di PDF atau simpan terpisah)
-- [ ] Halaman Certificate List, Create, Detail
+- [x] API create / list / detail / download / regenerate
+- [x] Service PDF generation
+- [x] Service hashing (SHA-256)
+- [x] Service QR (embed di PDF atau simpan terpisah)
+- [x] Halaman Certificate List, Create, Detail
 
 ### Done when
 
