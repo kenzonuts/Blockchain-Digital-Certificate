@@ -20,3 +20,11 @@ uploads/
 backend/uploads/
 *.log
 .DS_Store
+
+# Editor / agent tooling (do not publish)
+.claude/
+.windsurf/
+.agents/
+skills-lock.json
+**/AGENTS.md
+**/CLAUDE.md

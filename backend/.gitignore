@@ -5,4 +5,8 @@ dist/
 .data/
 *.log
 uploads/
+.claude/
+.windsurf/
+.agents/
+skills-lock.json
 
