@@ -61,3 +61,13 @@ model Certificate {
 
   @@map("certificates")
 }
+
+model VerificationLog {
+  id            String   @id @default(cuid())
+  certificateId String?  @map("certificate_id")
+  status        String
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  @@index([createdAt])
+  @@map("verification_logs")
+}

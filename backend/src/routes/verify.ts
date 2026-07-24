@@ -1,5 +1,6 @@
 import { Router } from "express";
 import fs from "fs";
+import type { Response } from "express";
 import { prisma } from "../lib/prisma";
 import { absoluteFromPublicPath } from "../lib/uploads";
 import { getCertificateOnChain } from "../services/blockchain";
@@ -15,13 +16,36 @@ export type VerifyStatus =
   | "PDF_MISSING"
   | "CHAIN_ERROR";
 
+async function respondVerify(
+  res: Response,
+  statusCode: number,
+  payload: {
+    status: VerifyStatus;
+    message: string;
+    certificateId?: string | null;
+    [key: string]: unknown;
+  }
+) {
+  await prisma.verificationLog
+    .create({
+      data: {
+        certificateId: payload.certificateId ?? null,
+        status: payload.status,
+      },
+    })
+    .catch((err) => console.error("Failed to log verification", err));
+
+  res.status(statusCode).json(payload);
+}
+
 verifyRouter.get("/:certificateId", async (req, res) => {
   const certificateId = decodeURIComponent(req.params.certificateId).trim();
 
   if (!certificateId) {
-    res.status(400).json({
-      status: "NOT_FOUND" satisfies VerifyStatus,
+    await respondVerify(res, 400, {
+      status: "NOT_FOUND",
       message: "Certificate ID is required",
+      certificateId: null,
     });
     return;
   }
@@ -36,8 +60,8 @@ verifyRouter.get("/:certificateId", async (req, res) => {
   });
 
   if (!certificate) {
-    res.status(404).json({
-      status: "NOT_FOUND" satisfies VerifyStatus,
+    await respondVerify(res, 404, {
+      status: "NOT_FOUND",
       message: "Certificate not found in the system",
       certificateId,
     });
@@ -57,9 +81,10 @@ verifyRouter.get("/:certificateId", async (req, res) => {
   };
 
   if (!certificate.pdfPath) {
-    res.json({
-      status: "PDF_MISSING" satisfies VerifyStatus,
+    await respondVerify(res, 200, {
+      status: "PDF_MISSING",
       message: "Certificate PDF is missing; cannot compute hash",
+      certificateId: certificate.certificateId,
       certificate: publicMeta,
     });
     return;
@@ -67,9 +92,10 @@ verifyRouter.get("/:certificateId", async (req, res) => {
 
   const abs = absoluteFromPublicPath(certificate.pdfPath);
   if (!fs.existsSync(abs)) {
-    res.json({
-      status: "PDF_MISSING" satisfies VerifyStatus,
+    await respondVerify(res, 200, {
+      status: "PDF_MISSING",
       message: "Certificate PDF file is missing on storage",
+      certificateId: certificate.certificateId,
       certificate: publicMeta,
     });
     return;
@@ -80,10 +106,11 @@ verifyRouter.get("/:certificateId", async (req, res) => {
   const pdfMatchesStored = storedHash ? pdfHash === storedHash : null;
 
   if (!certificate.transactionHash) {
-    res.json({
-      status: "NOT_PUBLISHED" satisfies VerifyStatus,
+    await respondVerify(res, 200, {
+      status: "NOT_PUBLISHED",
       message:
         "Certificate exists but has not been published to the blockchain yet",
+      certificateId: certificate.certificateId,
       certificate: publicMeta,
       hashes: {
         pdfHash,
@@ -100,10 +127,11 @@ verifyRouter.get("/:certificateId", async (req, res) => {
     const onChain = await getCertificateOnChain(certificate.certificateId);
 
     if (!onChain) {
-      res.json({
-        status: "INVALID" satisfies VerifyStatus,
+      await respondVerify(res, 200, {
+        status: "INVALID",
         message:
           "Certificate is marked published in database, but was not found on-chain",
+        certificateId: certificate.certificateId,
         certificate: publicMeta,
         hashes: {
           pdfHash,
@@ -120,11 +148,12 @@ verifyRouter.get("/:certificateId", async (req, res) => {
     const pdfMatchesOnChain = pdfHash === onChainHash;
     const valid = pdfMatchesOnChain;
 
-    res.json({
-      status: (valid ? "VALID" : "INVALID") satisfies VerifyStatus,
+    await respondVerify(res, 200, {
+      status: valid ? "VALID" : "INVALID",
       message: valid
         ? "Certificate is authentic. PDF hash matches the on-chain record."
         : "Certificate hash mismatch. The PDF may have been altered, or on-chain data does not match.",
+      certificateId: certificate.certificateId,
       certificate: {
         ...publicMeta,
         onChainIssuer: onChain.issuer,
@@ -140,12 +169,13 @@ verifyRouter.get("/:certificateId", async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(503).json({
-      status: "CHAIN_ERROR" satisfies VerifyStatus,
+    await respondVerify(res, 503, {
+      status: "CHAIN_ERROR",
       message:
         error instanceof Error
           ? error.message
           : "Failed to read certificate from blockchain",
+      certificateId: certificate.certificateId,
       certificate: publicMeta,
       hashes: {
         pdfHash,

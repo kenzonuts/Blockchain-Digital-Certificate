@@ -114,7 +114,16 @@ export const api = {
     });
   },
   me() {
-    return request<{ user: AuthUser }>("/api/auth/me");
+    return request<{ user: AuthUser & { createdAt?: string } }>("/api/auth/me");
+  },
+  updateProfile(name: string) {
+    return request<{ user: AuthUser & { createdAt?: string } }>(
+      "/api/auth/profile",
+      {
+        method: "PATCH",
+        body: JSON.stringify({ name }),
+      }
+    );
   },
   dashboardStats() {
     return request<{
@@ -122,7 +131,27 @@ export const api = {
       totalTemplates: number;
       blockchainTransactions: number;
       certificatesVerified: number;
+      recentCertificates: Array<{
+        id: string;
+        certificateId: string;
+        recipientName: string;
+        title: string;
+        transactionHash: string | null;
+        createdAt: string;
+      }>;
     }>("/api/dashboard/stats");
+  },
+  getSettings() {
+    return request<{
+      settings: {
+        appUrl: string;
+        corsOrigin: string;
+        blockchainRpcUrl: string | null;
+        certificateRegistryAddress: string | null;
+        networkLabel: string;
+        issuerWalletConfigured: boolean;
+      };
+    }>("/api/settings");
   },
   listTemplates() {
     return request<{ templates: CertificateTemplate[] }>("/api/templates");

@@ -14,7 +14,7 @@ Dokumen ini memecah pembangunan project menjadi phase yang berurutan. Kerjakan s
 | 3 | Certificate & PDF | Create cert, generate PDF, SHA-256 | Done |
 | 4 | Smart Contract & Publish | Solidity, Hardhat, publish hash | Done |
 | 5 | Public Verification | Verify page, QR, compare hash | Done |
-| 6 | Dashboard & Polish | Stats, UI, deploy demo | Pending |
+| 6 | Dashboard & Polish | Stats, UI, deploy demo | Done |
 
 ---
 
@@ -253,32 +253,32 @@ QR / Certificate ID → VALID untuk sertifikat published yang utuh; INVALID jika
 
 ### Dashboard stats
 
-- [ ] Total Certificates
-- [ ] Total Templates
-- [ ] Blockchain Transactions (published count)
-- [ ] Certificates Verified (opsional: counter log verify)
+- [x] Total Certificates
+- [x] Total Templates
+- [x] Blockchain Transactions (published count)
+- [x] Certificates Verified (opsional: counter log verify)
 
 ### Halaman tambahan
 
-- [ ] Settings
-- [ ] Profile
-- [ ] Landing Page final (modern SaaS, light theme)
+- [x] Settings
+- [x] Profile
+- [x] Landing Page final (modern SaaS, light theme)
 
 ### UI style checklist
 
-- Minimalis, professional, clean
-- Light theme
-- Rounded corners, soft shadow
-- Blue accent
-- Responsive
-- Terinspirasi Vercel / Stripe / Linear
+- [x] Minimalis, professional, clean
+- [x] Light theme
+- [x] Rounded corners, soft shadow
+- [x] Blue accent
+- [x] Responsive
+- [x] Terinspirasi Vercel / Stripe / Linear
 
 ### Deploy & dokumentasi
 
-- [ ] Deploy frontend + backend
-- [ ] Contract di Sepolia
-- [ ] README: arsitektur, cara verify, link explorer
-- [ ] Screenshot / short demo flow
+- [ ] Deploy frontend + backend (hosting: lakukan saat siap production)
+- [ ] Contract di Sepolia (opsional; langkah ada di README)
+- [x] README: arsitektur, cara verify, link explorer
+- [x] Screenshot / short demo flow (ditulis sebagai Demo flow di README + dashboard)
 
 ### Done when
 

@@ -79,3 +79,29 @@ authRouter.get("/me", requireAuth, async (req: AuthedRequest, res) => {
 
   res.json({ user });
 });
+
+const updateProfileSchema = z.object({
+  name: z.string().trim().min(1).max(120),
+});
+
+authRouter.patch("/profile", requireAuth, async (req: AuthedRequest, res) => {
+  const parsed = updateProfileSchema.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(400).json({ message: "Name is required" });
+    return;
+  }
+
+  const user = await prisma.user.update({
+    where: { id: req.user!.id },
+    data: { name: parsed.data.name },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+      createdAt: true,
+    },
+  });
+
+  res.json({ user });
+});
