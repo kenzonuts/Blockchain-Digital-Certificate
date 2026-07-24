@@ -73,11 +73,11 @@ Put the printed address into `backend/.env`:
 
 ```env
 BLOCKCHAIN_RPC_URL="http://127.0.0.1:8545"
-BLOCKCHAIN_PRIVATE_KEY="0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
+BLOCKCHAIN_PRIVATE_KEY="<Account #0 private key from hardhat node output>"
 CERTIFICATE_REGISTRY_ADDRESS="<deployed-address>"
 ```
 
-Hardhat account #0 key above is **local-only**.
+Use Hardhat Account #0 **only for local development**. Never commit real private keys.
 
 ### Sepolia (optional)
 
