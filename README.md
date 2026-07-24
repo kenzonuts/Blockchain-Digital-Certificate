@@ -127,9 +127,9 @@ Public verify: `http://localhost:3000/verify`
 | POST | `/api/certificates/:id/publish` | Yes | Write hash on-chain |
 | GET | `/api/verify/:certificateId` | No | Public authenticity check |
 
-## Phases
+## Status
 
-All core phases (0–6) are implemented. See [PHASES.md](./PHASES.md).
+MVP complete: auth, templates, certificates (PDF + SHA-256 + QR), on-chain publish, and public verification.
 
 ## Notes for reviewers
 
