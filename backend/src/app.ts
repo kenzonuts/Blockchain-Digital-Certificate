@@ -8,6 +8,7 @@ import { authRouter } from "./routes/auth";
 import { certificatesRouter } from "./routes/certificates";
 import { dashboardRouter } from "./routes/dashboard";
 import { templatesRouter } from "./routes/templates";
+import { verifyRouter } from "./routes/verify";
 
 export function createApp() {
   ensureUploadDirs();
@@ -32,6 +33,7 @@ export function createApp() {
   app.use("/api/dashboard", dashboardRouter);
   app.use("/api/templates", templatesRouter);
   app.use("/api/certificates", certificatesRouter);
+  app.use("/api/verify", verifyRouter);
 
   app.use(
     (

@@ -210,4 +210,52 @@ export const api = {
     a.remove();
     URL.revokeObjectURL(url);
   },
+  async verifyCertificate(certificateId: string) {
+    const res = await fetch(
+      `${API_URL}/api/verify/${encodeURIComponent(certificateId)}`
+    );
+    const data = (await res.json().catch(() => ({}))) as VerifyResult;
+
+    if (!data.status) {
+      throw new Error(
+        (data as { message?: string }).message ?? "Verification failed"
+      );
+    }
+
+    return data;
+  },
+};
+
+export type VerifyStatus =
+  | "VALID"
+  | "INVALID"
+  | "NOT_FOUND"
+  | "NOT_PUBLISHED"
+  | "PDF_MISSING"
+  | "CHAIN_ERROR";
+
+export type VerifyResult = {
+  status: VerifyStatus;
+  message: string;
+  certificateId?: string;
+  certificate?: {
+    certificateId: string;
+    recipientName: string;
+    title: string;
+    issuer: string;
+    issueDate: string;
+    templateName?: string;
+    transactionHash?: string | null;
+    blockNumber?: number | null;
+    blockchainTimestamp?: string | null;
+    onChainIssuer?: string;
+    onChainIssuedAt?: string;
+  };
+  hashes?: {
+    pdfHash: string;
+    storedHash: string | null;
+    onChainHash: string | null;
+    pdfMatchesStored: boolean | null;
+    pdfMatchesOnChain: boolean | null;
+  };
 };

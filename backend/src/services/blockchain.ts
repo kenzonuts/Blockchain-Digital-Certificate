@@ -15,30 +15,35 @@ export type OnChainCertificate = {
   issuedAt: number;
 };
 
-function requireBlockchainConfig() {
+function requireReadConfig() {
   if (!env.blockchainRpcUrl) {
     throw new Error("BLOCKCHAIN_RPC_URL is not configured");
-  }
-  if (!env.blockchainPrivateKey) {
-    throw new Error("BLOCKCHAIN_PRIVATE_KEY is not configured");
   }
   if (!env.certificateRegistryAddress) {
     throw new Error("CERTIFICATE_REGISTRY_ADDRESS is not configured");
   }
 }
 
+function requireWriteConfig() {
+  requireReadConfig();
+  if (!env.blockchainPrivateKey) {
+    throw new Error("BLOCKCHAIN_PRIVATE_KEY is not configured");
+  }
+}
+
 function getProvider() {
-  requireBlockchainConfig();
+  requireReadConfig();
   return new JsonRpcProvider(env.blockchainRpcUrl);
 }
 
 function getWallet() {
+  requireWriteConfig();
   const provider = getProvider();
   return new Wallet(env.blockchainPrivateKey, provider);
 }
 
 function getRegistry(signerOrProvider?: Wallet | JsonRpcProvider) {
-  requireBlockchainConfig();
+  requireReadConfig();
   const runner = signerOrProvider ?? getProvider();
   return new Contract(
     env.certificateRegistryAddress,

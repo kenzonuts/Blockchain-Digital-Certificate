@@ -13,7 +13,7 @@ Dokumen ini memecah pembangunan project menjadi phase yang berurutan. Kerjakan s
 | 2 | Template Management | Upload, preview, CRUD template | Done |
 | 3 | Certificate & PDF | Create cert, generate PDF, SHA-256 | Done |
 | 4 | Smart Contract & Publish | Solidity, Hardhat, publish hash | Done |
-| 5 | Public Verification | Verify page, QR, compare hash | Pending |
+| 5 | Public Verification | Verify page, QR, compare hash | Done |
 | 6 | Dashboard & Polish | Stats, UI, deploy demo | Pending |
 
 ---
@@ -235,11 +235,11 @@ Satu sertifikat bisa di-publish ke chain (local/Sepolia) dan data on-chain + DB 
 
 ### Deliverables
 
-- [ ] Halaman `/verify` (form input ID)
-- [ ] Halaman `/verify/[certificateId]` (dari QR)
-- [ ] API verify
-- [ ] UI hasil jelas (valid / invalid / not found / not published)
-- [ ] Landing page link ke Verify
+- [x] Halaman `/verify` (form input ID)
+- [x] Halaman `/verify/[certificateId]` (dari QR)
+- [x] API verify
+- [x] UI hasil jelas (valid / invalid / not found / not published)
+- [x] Landing page link ke Verify
 
 ### Done when
 
