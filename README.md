@@ -1,5 +1,7 @@
 # Blockchain Digital Certificate
 
+**Primordial Studio** · portfolio / demo project
+
 Full-stack certificate system: **hash-only proof on blockchain** + modern admin web app.
 
 Issue branded PDFs, store only SHA-256 on an EVM smart contract, and let anyone verify authenticity via Certificate ID or QR.
@@ -130,6 +132,20 @@ Public verify: `http://localhost:3000/verify`
 ## Status
 
 MVP complete: auth, templates, certificates (PDF + SHA-256 + QR), on-chain publish, and public verification.
+
+## License & usage
+
+© 2026 **Primordial Studio**. All rights reserved.
+
+This repository may be viewed and cloned for **personal learning and portfolio review only**.
+
+**Not permitted without written permission from Primordial Studio:**
+- commercial use or resale
+- redistribution as your own product/service
+- removing copyright / brand attribution
+- using “Primordial Studio” or “CertChain” to imply official affiliation
+
+See [LICENSE](./LICENSE) for full terms.
 
 ## Notes for reviewers
 

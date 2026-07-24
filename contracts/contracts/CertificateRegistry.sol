@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.24;
 
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
@@ -6,6 +6,8 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 /// @title CertificateRegistry
 /// @notice Stores SHA-256 certificate hashes on-chain for authenticity checks.
 /// @dev Does not store PDF files — only certificateId + hash + issuer + timestamp.
+/// @custom:security Contact Primordial Studio for commercial licensing.
+/// Copyright (c) 2026 Primordial Studio. All Rights Reserved.
 contract CertificateRegistry is Ownable {
     struct Certificate {
         string certificateId;

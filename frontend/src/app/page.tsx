@@ -133,7 +133,7 @@ export default function HomePage() {
 
       <footer className="relative border-t border-slate-200/80 bg-white/70">
         <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3 px-6 py-6 text-sm text-slate-500">
-          <p>CertChain · Blockchain Digital Certificate</p>
+          <p>© 2026 Primordial Studio · CertChain</p>
           <div className="flex gap-4">
             <Link href="/verify" className="hover:text-slate-800">
               Verify

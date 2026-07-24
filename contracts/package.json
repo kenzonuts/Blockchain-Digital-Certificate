@@ -2,6 +2,8 @@
   "name": "blockchain-cert-contracts",
   "version": "1.0.0",
   "private": true,
+  "license": "UNLICENSED",
+  "author": "Primordial Studio",
   "scripts": {
     "compile": "hardhat compile",
     "test": "hardhat test",

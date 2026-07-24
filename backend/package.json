@@ -2,6 +2,8 @@
   "name": "blockchain-cert-backend",
   "version": "1.0.0",
   "private": true,
+  "license": "UNLICENSED",
+  "author": "Primordial Studio",
   "description": "API for Blockchain Digital Certificate",
   "main": "dist/index.js",
   "scripts": {
